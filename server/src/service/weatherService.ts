@@ -34,6 +34,20 @@ class Weather {
 }
 // TODO: Complete the WeatherService class
 class WeatherService {
+  private baseURL: string = 'https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}';
+  private apiKey: string = process.env.WEATHER_API_KEY || '';
+  private cityName: string = '';
+
+  constructor(
+    baseURL: string,
+    apiKey: string,
+    cityName: string
+  ) {
+    this.baseURL = baseURL;
+    this.apiKey = apiKey;
+    this.cityName = cityName;
+  }
+    
   // TODO: Define the baseURL, API key, and city name properties
   // TODO: Create fetchLocationData method
   // private async fetchLocationData(query: string) {}
