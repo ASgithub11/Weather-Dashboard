@@ -62,13 +62,24 @@ class WeatherService {
     const { lat, lon } = locationData[0];
     return { lat, lon };
   }
-  
+
   // TODO: Create buildGeocodeQuery method
-  // private buildGeocodeQuery(): string {}
+  private buildGeocodeQuery(): string {
+    return `${this.cityName}`;
+  }
+
   // TODO: Create buildWeatherQuery method
-  // private buildWeatherQuery(coordinates: Coordinates): string {}
+  private buildWeatherQuery(coordinates: Coordinates): string {
+    return `${this.baseURL}forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.apiKey}`;
+  }
+
   // TODO: Create fetchAndDestructureLocationData method
-  // private async fetchAndDestructureLocationData() {}
+  private async fetchAndDestructureLocationData(): Promise<Coordinates> {
+    const query = this.buildGeocodeQuery();
+    const locationData = await this.fetchLocationData(query);
+    return this.destructureLocationData(locationData);
+  }
+  
   // TODO: Create fetchWeatherData method
   // private async fetchWeatherData(coordinates: Coordinates) {}
   // TODO: Build parseCurrentWeather method
