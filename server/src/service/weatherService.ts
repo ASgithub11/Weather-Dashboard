@@ -108,7 +108,20 @@ class WeatherService {
   }
 
   // TODO: Complete getWeatherForCity method
-  async getWeatherForCity(city: string) {}
+  async getWeatherForCity(city: string): Promise<any> {
+    try {
+      this.cityName = city;
+      const coordinates = await this.fetchAndDestructureLocationData();
+      const weatherData = await this.fetchWeatherData(coordinates);
+      const currentWeather = this.parseCurrentWeather(weatherData.list[0]);
+      const forecastArray = this.buildForecastArray(currentWeather, weatherData.list.slice(1));
+      return {
+        currentWeather, forecastArray
+      };
+    } catch (error) {
+      console.error (error);
+      throw new Error('Error fetching weather data');
+    }
+  }
 }
-
-export default new WeatherService();
+export default new WeatherService('https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}', process.env.WEATHER_API_KEY || '', '');
