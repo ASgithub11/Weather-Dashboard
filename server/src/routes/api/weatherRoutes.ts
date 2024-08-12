@@ -17,10 +17,10 @@ router.post('/', async (req, res) => {
     
   // TODO: save city to search history
   const cityWithId = await HistoryService.addCity(cityName);
-  res.json({ city: cityWithId, weather: weatherData });
+  return res.json({ city: cityWithId, weather: weatherData });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Unable to retrieve weather data or save city to search history' });
+    console.error('Error processing request:', error);
+    return res.status(500).json({ error: 'Unable to retrieve weather data or save city to search history' });
   }
 });
 
@@ -30,7 +30,7 @@ router.get('/history', async (_req, res) => {
     const history = await HistoryService.getCities();
     res.json(history);
   } catch (error) {
-    console.error(error);
+    console.error('Error retriving history:', error);
     res.status(500).json({ error: 'Unable to retrieve search history' });
   }
 });
@@ -47,7 +47,7 @@ router.delete('/history/:id', async (req, res) => {
       return res.status(404).json({ error: 'City not found' });
     }
   } catch (error) {
-    console.error(error);
+    console.error('Error deleting city:', error);
     return res.status(500).json({ error: 'Unable to delete city from search history' });
   }
 });
