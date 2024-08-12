@@ -13,10 +13,10 @@ router.post('/', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'City name is required' });
   }
   try {
-    const weatherData = await WeatherService.getWeatherData(cityName);
+    const weatherData = await WeatherService.getWeatherForCity(cityName);
     
   // TODO: save city to search history
-  const cityWithId = await HistoryService.saveCity(cityName);
+  const cityWithId = await HistoryService.addCity(cityName);
   res.json({ city: cityWithId, weather: weatherData });
   } catch (error) {
     console.error(error);
@@ -27,7 +27,7 @@ router.post('/', async (req: Request, res: Response) => {
 // TODO: GET search history
 router.get('/history', async (req: Request, res: Response) => {
   try {
-    const history = await HistoryService.getHistory();
+    const history = await HistoryService.getCities();
     res.json(history);
   } catch (error) {
     console.error(error);
