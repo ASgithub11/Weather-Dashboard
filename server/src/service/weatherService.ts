@@ -37,16 +37,10 @@ class WeatherService {
 
 // TODO: Define the baseURL, API key, and city name properties
   private baseURL: string = 'https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}';
-  private apiKey: string = process.env.WEATHER_API_KEY || '';
-  private cityName: string = '';
+  private apiKey = process.env.OPENWEATHER_API_KEY;
+  private cityName: string;
 
-  constructor(
-    baseURL: string,
-    apiKey: string,
-    cityName: string
-  ) {
-    this.baseURL = baseURL;
-    this.apiKey = apiKey;
+  constructor(cityName: string) {
     this.cityName = cityName;
   }
     
@@ -58,7 +52,7 @@ class WeatherService {
   }
 
   // TODO: Create destructureLocationData method
-  private destructureLocationData(locationData: Coordinates[]): Coordinates {
+  private destructureLocationData(locationData: any): Coordinates {
     const { lat, lon } = locationData[0];
     return { lat, lon };
   }
@@ -113,7 +107,7 @@ class WeatherService {
       this.cityName = city;
       const coordinates = await this.fetchAndDestructureLocationData();
       const weatherData = await this.fetchWeatherData(coordinates);
-      const currentWeather = this.parseCurrentWeather(weatherData.list[0]);
+      const currentWeather = this.parseCurrentWeather(weatherData);
       const forecastArray = this.buildForecastArray(currentWeather, weatherData.list.slice(1));
       return {
         currentWeather, forecastArray
@@ -124,4 +118,4 @@ class WeatherService {
     }
   }
 }
-export default new WeatherService('https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}', process.env.WEATHER_API_KEY || '', '');
+export default new WeatherService('');
